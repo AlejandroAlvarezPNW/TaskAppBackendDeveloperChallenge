@@ -25,7 +25,12 @@ const Register = () => {
       alert("Registration successful! Please log in.");
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Error registering");
+      if (error.response?.data?.errors) {
+        const messages = error.response.data.errors.map(err => err.msg).join('\n');
+        alert(messages);
+      } else {
+        alert(error.response?.data?.message || "Error registering");
+      } 
     }
   };
 

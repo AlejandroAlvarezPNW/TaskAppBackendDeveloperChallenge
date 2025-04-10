@@ -4,19 +4,24 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 const dotenv = require('dotenv');
+const { body, validationResult } = require('express-validator');
 
 dotenv.config(); // Ensure environment variables are loaded
 
 // Register route
-router.post('/register', async (req, res) => {
+router.post('/register', [
+    body('email').isEmail().withMessage('Please provide a valid email'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+    body('username').notEmpty().withMessage('Username is required')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { username, email, password } = req.body;
     
     try {
-        // Check if all fields are provided
-        if (!username || !email || !password) {
-            return res.status(400).json({ message: 'Please provide all fields' });
-        }
-
         // Check if the user already exists
         const userExists = await User.findOne({ email });
         if (userExists) {
