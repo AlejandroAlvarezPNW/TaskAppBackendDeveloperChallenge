@@ -25,6 +25,9 @@ const Register = () => {
       alert("Registration successful! Please log in.");
       navigate("/login");
     } catch (error) {
+      console.error("Full error object:", error);
+      console.error("Error response:", error.response);
+      console.error("Error response data:", error.response?.data);
       if (error.response?.data?.errors) {
         const messages = error.response.data.errors.map(err => err.msg).join('\n');
         alert(messages);
