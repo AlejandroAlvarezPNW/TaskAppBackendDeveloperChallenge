@@ -30,6 +30,7 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 const allowedOrigins = 
 [
     "https://taskappdeployable-2815f043dfd0.herokuapp.com"
@@ -41,6 +42,8 @@ app.use
     allowedHeaders: ["Content-Type", "x-auth-token"],
     credentials: true,
 }));
+app.options("*", cors()); // Enable preflight across all routes
+
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Routes
