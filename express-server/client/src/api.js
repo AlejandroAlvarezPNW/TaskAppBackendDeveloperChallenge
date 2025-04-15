@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const url = process.env.NODE_ENV === 'Production' ? 'https://taskappdeployable.herokuapp.com/api' : 'http://localhost:3000/api';
 const api = axios.create({
-    baseURL: apiUrl, // Adjust if needed
+    baseURL: url,
     headers: { "Content-Type": "application/json" },
 });
 
