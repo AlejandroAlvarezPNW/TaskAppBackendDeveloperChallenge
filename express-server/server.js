@@ -30,7 +30,17 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+const allowedOrigins = 
+[
+    "https://taskappdeployable-2815f043dfd0.herokuapp.com"
+];
+app.use
+(cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "x-auth-token"],
+    credentials: true,
+}));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Routes
