@@ -21,7 +21,8 @@ const PORT = process.env.PORT || 3000;
 // Set up CORS first
 const allowedOrigins = 
 [
-    "https://taskappdeployable-2815f043dfd0.herokuapp.com"
+    "https://taskappdeployable-2815f043dfd0.herokuapp.com",
+    "http://localhost:3001"
 ];
 app.use
 (cors({
