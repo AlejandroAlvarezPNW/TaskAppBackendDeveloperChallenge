@@ -13,3 +13,5 @@ Open the terminal within Visual Studio Code and run the following commands.
   The frontend should be running.
   A web browser window will open and show the app's Home Page.
   Has "Welcome to the To-Do App!" with Sign Up and Login buttons. 
+
+If you want to try the deployed instance, it's at this URL: `https://taskappdeployable-2815f043dfd0.herokuapp.com/`
