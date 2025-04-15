@@ -7,6 +7,7 @@ console.log("REACT_APP_NODE_ENV:Frontend:", process.env.REACT_APP_NODE_ENV);
 const api = axios.create({
     baseURL: url,
     headers: { "Content-Type": "application/json" },
+    withCredentials: true,
 });
 
 export default api;
