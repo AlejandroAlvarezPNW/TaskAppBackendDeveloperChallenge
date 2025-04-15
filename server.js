@@ -60,10 +60,16 @@ app.use((err, req, res, next) => {
     res.status(500).send({ error: 'Something went wrong!' });
 });
 
-// Catch-all route to server index.html for the frontend routes
+/* Catch-all route to server index.html for the frontend routes
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
+*/
   
+//Catch-all route to server index.html for the frontend routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+  });
+
 // Start Server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
