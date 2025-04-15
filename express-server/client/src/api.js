@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const url = process.env.REACT_APP_NODE_ENV === 'Production' ? 'https://taskappdeployable.herokuapp.com/api' : 'http://localhost:3000/api';
+//const url = 'https://taskappdeployable.herokuapp.com/api'; //This is needed during build time for the front-end
 console.log("url:", url);
 console.log("REACT_APP_NODE_ENV:Frontend:", process.env.REACT_APP_NODE_ENV);
 const api = axios.create({
