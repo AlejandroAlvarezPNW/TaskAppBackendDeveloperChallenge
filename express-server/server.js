@@ -18,19 +18,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
-const MONGO_URL = process.env.REACT_APP_NODE_ENV === 'Production' ? 'mongodb+srv://n7alejandroalvarez:yt7m2aQchcu2rFUB@userstask.drlmxvh.mongodb.net/?retryWrites=true&w=majority&appName=UsersTask' : 'mongodb://localhost:27017/appDatabase';
-console.log("MONGO_URL:", MONGO_URL);
-console.log("REACT_APP_NODE_ENV:MongoDB:", process.env.REACT_APP_NODE_ENV);
-mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log('MongoDB connection error:', err));
-
-// Middleware
-app.use(morgan('tiny'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+// Set up CORS first
 const allowedOrigins = 
 [
     "https://taskappdeployable-2815f043dfd0.herokuapp.com"
@@ -44,6 +32,18 @@ app.use
 }));
 app.options("*", cors()); // Enable preflight across all routes
 
+// Connect to MongoDB
+const MONGO_URL = process.env.REACT_APP_NODE_ENV === 'Production' ? 'mongodb+srv://n7alejandroalvarez:yt7m2aQchcu2rFUB@userstask.drlmxvh.mongodb.net/?retryWrites=true&w=majority&appName=UsersTask' : 'mongodb://localhost:27017/appDatabase';
+console.log("MONGO_URL:", MONGO_URL);
+console.log("REACT_APP_NODE_ENV:MongoDB:", process.env.REACT_APP_NODE_ENV);
+mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log('MongoDB connection error:', err));
+
+// Middleware
+app.use(morgan('tiny'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Routes
