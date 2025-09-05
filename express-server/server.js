@@ -82,6 +82,7 @@ app.post('/api/tasks/nlp', async (req, res) => {
     }
     let stuff = null;
     try {
+        //throw new Error('Simulated error for testing fallback');
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {

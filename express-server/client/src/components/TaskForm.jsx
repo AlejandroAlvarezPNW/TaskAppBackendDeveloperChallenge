@@ -5,6 +5,7 @@ const TaskForm = ({ existingTask, onSubmit, onCancel }) => {
   const [title, setTitle] = useState(existingTask ? existingTask.title : '');
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (existingTask) {
@@ -33,7 +34,7 @@ const TaskForm = ({ existingTask, onSubmit, onCancel }) => {
       try {
         const fallbackResponse = await fetch('/api/tasks', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "x-auth-token": token, 'Content-Type': 'application/json' },
           body: JSON.stringify({ title: taskTitle }),
         });
 

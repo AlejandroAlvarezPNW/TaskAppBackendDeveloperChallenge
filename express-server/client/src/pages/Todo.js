@@ -120,7 +120,7 @@ const Todo = () => {
               </>
             }
           >
-            <ListItemText primary={task.title} />
+            <ListItemText primary={task.title} secondary={task.description} />
           </ListItem>
         ))}
       </List>
