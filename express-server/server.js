@@ -80,7 +80,7 @@ app.post('/api/tasks/nlp', async (req, res) => {
     if (!userInput) {
         return res.status(400).json({ error: 'userInput is required' });
     }
-
+    let stuff = null;
     try {
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
@@ -105,6 +105,7 @@ app.post('/api/tasks/nlp', async (req, res) => {
 
         // Parse GPT response
         const taskData = JSON.parse(response.data.choices[0].message.content);
+        stuff = taskData;
 
         // Attach your fixed userId here 👇
         const newTask = new Task({
@@ -116,7 +117,7 @@ app.post('/api/tasks/nlp', async (req, res) => {
         res.status(201).json(newTask);
 
     } catch (err) {
-        console.error('OpenAI API error:', err.response?.data || err.message);
+        console.error('OpenAI API error:', err.response?.data || err.message, stuff);
         res.status(500).json({ error: 'Failed to create task from NLP' });
     }
 });
