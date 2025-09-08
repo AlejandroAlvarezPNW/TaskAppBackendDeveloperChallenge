@@ -89,14 +89,15 @@ const Todo = () => {
           onCancel={() => setShowNewTaskForm(false)}
         />
       ) : (
-        <Button
-          variant="contained"
-          onClick={() => setShowNewTaskForm(true)}
-          sx={{ mb: 2 }}
-          disabled={loadingNewTask} // disable button while creating
-        >
-          {loadingNewTask ? <CircularProgress size={24} /> : 'Add New Task'}
-        </Button>
+        <Box display="flex" justifyContent="center" sx={{ mb: 2 }}>
+          <Button
+            variant="contained"
+            onClick={() => setShowNewTaskForm(true)}
+            disabled={loadingNewTask} // disable button while creating
+          >
+            {loadingNewTask ? <CircularProgress size={24} /> : 'Add New Task'}
+          </Button>
+        </Box>
       )}
 
       {loading && (
