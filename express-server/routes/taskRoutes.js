@@ -12,7 +12,7 @@ router.post("/", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    const newTask = new Task({ title, userId: req.user.id });
+    const newTask = new Task({ title, description: "Manually Created" , userId: req.user.id });
     await newTask.save();
 
     res.status(201).json(newTask);

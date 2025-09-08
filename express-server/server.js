@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken'); // Kept the first declaration
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
+
+console.log("OPENAI_API_KEY loaded:", process.env.OPENAI_API_KEY ? "Yes" : "No");
 
 const errorHandler = require('./errorHandler');
 const authRoutes = require('./routes/authRoutes');
@@ -70,11 +73,65 @@ app.post('/update-role', async (req, res) => {
     }
 });
 
+// NLP Task Creation Route
+app.post('/api/tasks/nlp', async (req, res) => {
+    const { userInput } = req.body;
+
+    if (!userInput) {
+        return res.status(400).json({ error: 'userInput is required' });
+    }
+    let stuff = null;
+    try {
+        //throw new Error('Simulated error for testing fallback');
+        const response = await axios.post(
+            'https://api.openai.com/v1/chat/completions',
+            {
+                model: "gpt-3.5-turbo",
+                messages: [
+                    {
+                        role: "system",
+                        content: "Convert user input into a JSON task with fields: title, description, dueDate (ISO 8601), and priority (low, medium, high). Return ONLY valid JSON."
+                    },
+                    { role: "user", content: userInput }
+                ],
+                temperature: 0
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        // Parse GPT response
+        const taskData = JSON.parse(response.data.choices[0].message.content);
+        stuff = taskData;
+
+        // Attach your fixed userId here 👇
+        const newTask = new Task({
+            ...taskData,
+            userId: "68b89ca16f7576fbab09b187"
+        });
+
+        await newTask.save();
+        res.status(201).json(newTask);
+
+    } catch (err) {
+        console.error('OpenAI API error:', err.response?.data || err.message, stuff);
+        res.status(500).json({ error: 'Failed to create task from NLP' });
+    }
+});
+
 // Error Handling Middleware
 app.use(errorHandler);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send({ error: 'Something went wrong!' });
+});
+
+  app.get('/test', (req, res) => {
+  res.send('Server is working');
 });
 
 // Catch-all route to server index.html for the frontend routes
