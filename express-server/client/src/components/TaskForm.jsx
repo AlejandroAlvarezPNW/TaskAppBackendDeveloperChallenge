@@ -22,7 +22,7 @@ const TaskForm = ({ existingTask, onSubmit, onCancel }) => {
     try {
       const response = await fetch('/api/tasks/nlp', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "x-auth-token": token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ userInput: taskTitle }),
       });
 
